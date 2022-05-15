@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/main.min.css">
+    <title>Document</title>
+</head>
+<body>
+
+    <div class="container">
+        <h1 class="movies_heading text-center pt-3 pb-3">Movies catalog</h1>
+
+        <div class="movies_wrapper d-flex">
+            <div class="movies_left w-25 me-5">
+                <form class="movies_form needs-validation" method="post" action="https://echo.htmlacademy.ru/" novalidate>
+                    <div class="mb-3">
+                        <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="user_film" required autocomplete="off" minlength="5">
+                        <div class="valid-feedback">
+                            Looks good!
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <input type="text" class="form-control" id="exampleInputPassword1" name="user_film_season" required autocomplete="off" minlength="5">
+                        <div class="valid-feedback">
+                            Looks good!
+                        </div>
+                    </div>
+
+                    <select class="form-select mb-3" aria-label="Default select example" name="all" required>
+                        <option selected>all</option>
+                        <option value="four">four</option>
+                        <option value="five">five</option>
+                        <option value="seven">seven</option>
+                    </select>
+                    <div class="invalid-feedback">
+                        Please select a valid state.
+                    </div>
+
+                    <select class="form-select mb-3" aria-label="Default select example" name="Rating" required>
+                        <option selected>Rating (high to low)</option>
+                        <option value="good">good</option>
+                        <option value="norm">norm</option>
+                        <option value="bad">bad</option>
+                    </select>
+                    <div class="invalid-feedback">
+                        Please select a valid state.
+                    </div>
+
+                    <button type="submit" class="btn btn-primary w-100">Submit</button>
+                </form>
+
+                <div class="movies_left-bottom mt-3">
+                    <h2 class="movies_left-bottom">
+                        Bookmarked movies
+                    </h2>
+
+                    <ul class="list-group">
+                        <li class="list-group-item">
+                            <p class="movies_left-desc">
+                                Avenger: Infinity War
+                            </p>
+                            <button class="btn btn-danger">Remove</button>
+                        </li>
+
+                        <li class="list-group-item">
+                            <p class="movies_left-desc">
+                                The Avengers
+                            </p>
+                            <button class="btn btn-danger">Remove</button>
+                        </li>
+
+                        <li class="list-group-item">
+                            <p class="movies_left-desc">
+                                12 Years a Slave
+                            </p>
+                            <button class="btn btn-danger">Remove</button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="movies_right w-75 d-flex flex-column align-items-center">
+                <h3 class="movies_right-heading align-self-start">
+                    Search results: 39
+                </h3>
+
+                <div class="alert alert-info w-100" role="alert">
+                    Use the form on the left  to search for a movie
+                </div>
+
+                <div class="row row-cols-1 row-cols-md-2 g-4">
+                    <div class="col">
+                        <div class="card">
+                            <img src="./images/maxresdefault.jpg" class="card-img-top" alt="Avenger">
+                            <div class="card-body">
+                                <h5 class="card-title">Avenger: Infinity War</h5>
+                                <div class="img_wrapper d-flex">
+                                    <img src="./images/calendar.svg" alt="calendar">
+                                    <p class="card-text ms-2">2018</p>
+                                </div>
+                                <div class="degree_wrapper d-flex align-items-center mt-3">
+                                    <img src="./images/yulduz.png" alt="yulduz" width="20" height="20">
+                                    <p class="degree_desc m-0 ms-2">8.7</p>
+                                </div>
+                                <div class="button_wrapper d-flex justify-content-between mt-3">
+                                    <button type="button" class="btn btn-outline-primary">Watch trailer</button>
+                                    <button type="button" class="btn btn-outline-secondary">More info</button>
+                                    <button type="button" class="btn btn-outline-success">Bookmark</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <div class="card">
+                            <img src="./images/infinity-war.webp" class="card-img-top" alt="ironman">
+                            <div class="card-body">
+                                <h5 class="card-title">The Avengers</h5>
+                                <div class="img_wrapper d-flex">
+                                    <img src="./images/calendar.svg" alt="calendar">
+                                    <p class="card-text ms-2">2012</p>
+                                </div>
+                                <div class="degree_wrapper d-flex align-items-center mt-3">
+                                    <img src="./images/yulduz.png" alt="yulduz" width="20" height="20">
+                                    <p class="degree_desc m-0 ms-2">8.1</p>
+                                </div>
+                                <div class="button_wrapper d-flex justify-content-between mt-3">
+                                    <button type="button" class="btn btn-outline-primary">Watch trailer</button>
+                                    <button type="button" class="btn btn-outline-secondary">More info</button>
+                                    <button type="button" class="btn btn-outline-success">Bookmark</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="btn-group mt-5" role="group" aria-label="Basic outlined example">
+                    <button type="button" class="btn btn-outline-primary border-secondary">1</button>
+                    <button type="button" class="btn btn-outline-primary border-secondary">2</button>
+                    <button type="button" class="btn btn-outline-primary border-secondary">3</button>
+                    <button type="button" class="btn btn-outline-primary border-secondary">4</button>
+                  </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="./js/form.js"></script>
+    <script src="./js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
