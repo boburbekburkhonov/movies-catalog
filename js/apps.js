@@ -15,6 +15,8 @@ elSpanResult.textContent = films.length;
 const bookmarkedFilms  =[];
 elSelect.innerHTML = null;
 
+// Genres Select
+
 const renderGenres = function(film){
   const unique = [];
 
@@ -35,6 +37,8 @@ const renderGenres = function(film){
     elSelect.appendChild(newOption);
   })
 }
+
+// Input Value And Select Value Submit;
 
 elForm.addEventListener("submit", (evt) => {
   evt.preventDefault();
@@ -75,6 +79,52 @@ elForm.addEventListener("submit", (evt) => {
 
 })
 
+// Bookmark List;
+
+const renderBookmarList = function(arr, htmlElement) {
+  arr.forEach(film => {
+    const newBookmarItem = document.createElement("li");
+    const newBookmarImg = document.createElement("img");
+    const newBookmarTitle = document.createElement("h3");
+    const newBookmarWatch = document.createElement("a");
+    const newBookmarBtn = document.createElement("button");
+
+    newBookmarImg.setAttribute("src", film.poster)
+    newBookmarTitle.textContent = film.title;
+    newBookmarItem.setAttribute("class", "card card-body card-title");
+    newBookmarWatch.textContent = "Watch Trailer";
+    newBookmarWatch.setAttribute("class", "text-decoration-none btn btn-warning mb-2");
+    newBookmarWatch.setAttribute("href", `https://www.youtube.com/watch?v=${film.id}`)
+    newBookmarBtn.textContent = "Remove";
+    newBookmarBtn.setAttribute("class", "btn btn-danger");
+
+    newBookmarBtn.dataset.removeBtnId = film.id;
+
+    htmlElement.appendChild(newBookmarItem);
+    newBookmarItem.appendChild(newBookmarImg);
+    newBookmarItem.appendChild(newBookmarTitle);
+    newBookmarItem.appendChild(newBookmarWatch);
+    newBookmarItem.appendChild(newBookmarBtn);
+  })
+}
+
+elListBookmark.addEventListener("click", (evt) => {
+  if (evt.target.matches(".btn-danger")){
+    const removeBtnId = evt.target.dataset.removeBtnId;
+    const findIndexRemove = bookmarkedFilms.findIndex(film => film.id === removeBtnId);
+
+    elListBookmark.innerHTML = null;
+
+    bookmarkedFilms.splice(findIndexRemove, 1);
+
+    elBookmarkResult.textContent = bookmarkedFilms.length;
+
+    renderBookmarList(bookmarkedFilms, elListBookmark)
+  }
+})
+
+// Bookmark Click;
+
 elFilmsList.addEventListener("click", (evt) => {
   if(evt.target.matches(".btn-bookmark")){
     const findBookmarkId = evt.target.dataset.bookmarkId * 1;
@@ -84,31 +134,12 @@ elFilmsList.addEventListener("click", (evt) => {
       bookmarkedFilms.push(filterBookmark);
     }
 
-    bookmarkedFilms.forEach(film => {
 
       elListBookmark.innerHTML = null;
 
       elBookmarkResult.textContent = bookmarkedFilms.length;
 
-      renderList(bookmarkedFilms, elListBookmark);
-    })
-  }
-})
-
-elListBookmark.addEventListener("click", (evt) => {
-  if (evt.target.matches(".btn-remove")){
-    const removeBtnId = evt.target.dataset.removeBtn * 1;
-    const findIndexRemove = bookmarkedFilms.findIndex(film => film.id *1 === removeBtnId);
-
-    elListBookmark.innerHTML = null;
-
-    console.log(findIndexRemove);
-
-    bookmarkedFilms.splice(findIndexRemove, 1);
-
-    elBookmarkResult.textContent = bookmarkedFilms.length;
-
-    renderList(bookmarkedFilms, elListBookmark)
+      renderBookmarList(bookmarkedFilms, elListBookmark)
   }
 })
 
@@ -121,7 +152,6 @@ const renderList = function(film, list){
     const newDesc = document.createElement("p");
     const newWatchBtn =document.createElement("a");
     const newBookmarkBtn = document.createElement("button");
-    const newRemoveBtn = document.createElement("button");
     const newList = document.createElement("ul")
 
 
@@ -143,21 +173,14 @@ const renderList = function(film, list){
     newList.classList.add("mt-3");
     newList.classList.add("mb-3");
     newList.classList.add("list-unstyled");
-    newRemoveBtn.classList.add("btn-remove");
-    newRemoveBtn.classList.add("btn");
-    newRemoveBtn.classList.add("btn-danger");
-    newRemoveBtn.classList.add("mt-3");
-    newRemoveBtn.style.marginLeft = "80px";
 
     newBookmarkBtn.dataset.bookmarkId = element.id;
-    newRemoveBtn.dataset.removeBtn = element.id;
 
 
     newTitle.textContent = element.title;
     newDesc.textContent = element.overview;
     newWatchBtn.textContent = "Watch trieler";
     newBookmarkBtn.textContent = "Bookmark";
-    newRemoveBtn.textContent = "Remove"
 
 
     element.genres.forEach(film => {
@@ -179,15 +202,8 @@ const renderList = function(film, list){
     newDiv.appendChild(newDesc);
     newDiv.appendChild(newWatchBtn);
     newDiv.appendChild(newBookmarkBtn);
-    newDiv.appendChild(newRemoveBtn);
   })
 }
 
 renderList(films, elFilmsList);
 renderGenres(films);
-
-// elButton.addEventListener("click", () => {
-
-//   const selectValue = elSelect.value;
-//   console.log(selectValue);
-// })
