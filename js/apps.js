@@ -9,14 +9,12 @@ const elInput = document.querySelector(".input");
 const elSelect = document.querySelector(".select");
 const elButton = document.querySelector(".button");
 
-
-
 elSpanResult.textContent = films.length;
-const bookmarkedFilms  =[];
+const localBookmark = JSON.parse(window.localStorage.getItem("bookmark"));
+const bookmarkedFilms = localBookmark || [];
 elSelect.innerHTML = null;
 
 // Genres Select
-
 const renderGenres = function(film){
   const unique = [];
 
@@ -39,10 +37,8 @@ const renderGenres = function(film){
 }
 
 // Input Value And Select Value Submit;
-
 elForm.addEventListener("submit", (evt) => {
   evt.preventDefault();
-
   if(elInput.value) {
     elFilmsList.innerHTML = null;
 
@@ -56,14 +52,15 @@ elForm.addEventListener("submit", (evt) => {
       findFilms.push(inputValueFilms)
     }
 
-    elSpanResult.textContent = findFilms.length;
+    elInput.value = null;
 
     renderList(findFilms, elFilmsList);
-  } else if(elSelect.value) {
+  } else if (elSelect.value) {
 
     elFilmsList.innerHTML = null;
 
     const selectValue = elSelect.value;
+
     const filteredArr = [];
 
     films.forEach(film => {
@@ -72,16 +69,15 @@ elForm.addEventListener("submit", (evt) => {
       }
     })
 
-    elSpanResult.textContent = filteredArr.length;
-
-    renderList(filteredArr, elFilmsList)
+    renderList(filteredArr, elFilmsList);
   }
-
 })
 
 // Bookmark List;
 
 const renderBookmarList = function(arr, htmlElement) {
+  elBookmarkResult.textContent = bookmarkedFilms.length;
+
   arr.forEach(film => {
     const newBookmarItem = document.createElement("li");
     const newBookmarImg = document.createElement("img");
@@ -108,6 +104,8 @@ const renderBookmarList = function(arr, htmlElement) {
   })
 }
 
+renderBookmarList(bookmarkedFilms, elListBookmark)
+
 elListBookmark.addEventListener("click", (evt) => {
   if (evt.target.matches(".btn-danger")){
     const removeBtnId = evt.target.dataset.removeBtnId;
@@ -117,7 +115,12 @@ elListBookmark.addEventListener("click", (evt) => {
 
     bookmarkedFilms.splice(findIndexRemove, 1);
 
-    elBookmarkResult.textContent = bookmarkedFilms.length;
+
+    window.localStorage.setItem("bookmark", JSON.stringify(bookmarkedFilms));
+
+    if(bookmarkedFilms.length === 0) {
+      window.localStorage.removeItem("bookmark")
+    }
 
     renderBookmarList(bookmarkedFilms, elListBookmark)
   }
@@ -134,10 +137,9 @@ elFilmsList.addEventListener("click", (evt) => {
       bookmarkedFilms.push(filterBookmark);
     }
 
-
       elListBookmark.innerHTML = null;
 
-      elBookmarkResult.textContent = bookmarkedFilms.length;
+      window.localStorage.setItem("bookmark", JSON.stringify(bookmarkedFilms))
 
       renderBookmarList(bookmarkedFilms, elListBookmark)
   }
