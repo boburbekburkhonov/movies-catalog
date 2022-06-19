@@ -53,6 +53,7 @@ elForm.addEventListener("submit", (evt) => {
     }
 
     elInput.value = null;
+    elSpanResult.textContent = findFilms.length;
 
     renderList(findFilms, elFilmsList);
   } else if (elSelect.value) {
@@ -68,6 +69,8 @@ elForm.addEventListener("submit", (evt) => {
         filteredArr.push(film)
       }
     })
+
+    elSpanResult.textContent = filteredArr.length;
 
     renderList(filteredArr, elFilmsList);
   }
