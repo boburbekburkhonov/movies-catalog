@@ -12,7 +12,7 @@ const elButton = document.querySelector(".button");
 elSpanResult.textContent = films.length;
 const localBookmark = JSON.parse(window.localStorage.getItem("bookmark"));
 const bookmarkedFilms = localBookmark || [];
-elSelect.innerHTML = null;
+// elSelect.innerHTML = null;
 
 // Genres Select
 const renderGenres = function(film){
@@ -53,7 +53,14 @@ elForm.addEventListener("submit", (evt) => {
     }
 
     elInput.value = null;
+
+    console.log(findFilms);
+
     elSpanResult.textContent = findFilms.length;
+
+    if(findFilms.includes(undefined)){
+      elSpanResult.textContent = 0
+    }
 
     renderList(findFilms, elFilmsList);
   } else if (elSelect.value) {
@@ -72,12 +79,17 @@ elForm.addEventListener("submit", (evt) => {
 
     elSpanResult.textContent = filteredArr.length;
 
+    if(selectValue === "all"){
+      elSpanResult.textContent = films.length;
+
+      renderList(films, elFilmsList);
+    }
+
     renderList(filteredArr, elFilmsList);
   }
 })
 
 // Bookmark List;
-
 const renderBookmarList = function(arr, htmlElement) {
   elBookmarkResult.textContent = bookmarkedFilms.length;
 
