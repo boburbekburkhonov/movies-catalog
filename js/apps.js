@@ -8,11 +8,13 @@ const elForm = document.querySelector(".form");
 const elInput = document.querySelector(".input");
 const elSelect = document.querySelector(".select");
 const elButton = document.querySelector(".button");
+const elModal = document.querySelector(".modal");
+const elCloseModal = document.querySelector(".close-modal");
+const elOverlay = document.querySelector(".overlay");
 
 elSpanResult.textContent = films.length;
 const localBookmark = JSON.parse(window.localStorage.getItem("bookmark"));
 const bookmarkedFilms = localBookmark || [];
-// elSelect.innerHTML = null;
 
 // Genres Select
 const renderGenres = function(film){
@@ -53,8 +55,6 @@ elForm.addEventListener("submit", (evt) => {
     }
 
     elInput.value = null;
-
-    console.log(findFilms);
 
     elSpanResult.textContent = findFilms.length;
 
@@ -119,7 +119,7 @@ const renderBookmarList = function(arr, htmlElement) {
   })
 }
 
-renderBookmarList(bookmarkedFilms, elListBookmark)
+renderBookmarList(bookmarkedFilms, elListBookmark);
 
 elListBookmark.addEventListener("click", (evt) => {
   if (evt.target.matches(".btn-danger")){
@@ -142,7 +142,6 @@ elListBookmark.addEventListener("click", (evt) => {
 })
 
 // Bookmark Click;
-
 elFilmsList.addEventListener("click", (evt) => {
   if(evt.target.matches(".btn-bookmark")){
     const findBookmarkId = evt.target.dataset.bookmarkId * 1;
@@ -152,11 +151,11 @@ elFilmsList.addEventListener("click", (evt) => {
       bookmarkedFilms.push(filterBookmark);
     }
 
-      elListBookmark.innerHTML = null;
+    elListBookmark.innerHTML = null;
 
-      window.localStorage.setItem("bookmark", JSON.stringify(bookmarkedFilms))
+    window.localStorage.setItem("bookmark", JSON.stringify(bookmarkedFilms))
 
-      renderBookmarList(bookmarkedFilms, elListBookmark)
+    renderBookmarList(bookmarkedFilms, elListBookmark)
   }
 })
 
@@ -169,6 +168,7 @@ const renderList = function(film, list){
     const newDesc = document.createElement("p");
     const newWatchBtn =document.createElement("a");
     const newBookmarkBtn = document.createElement("button");
+    const newMoreInfoBtn = document.createElement("button");
     const newList = document.createElement("ul")
 
 
@@ -176,7 +176,7 @@ const renderList = function(film, list){
     newItem.classList.add("card");
     newItem.classList.add("mt-5")
     newImg.setAttribute("src", element.poster);
-    newWatchBtn.setAttribute("href", `https://www.youtube.com/watch?v=${element.id}`)
+    newWatchBtn.setAttribute("href", `https://www.youtube.com/watch?v=${element.id}`);
     newImg.classList.add("card-img-top");
     newDiv.classList.add("card-body");
     newTitle.classList.add("card-title");
@@ -190,14 +190,17 @@ const renderList = function(film, list){
     newList.classList.add("mt-3");
     newList.classList.add("mb-3");
     newList.classList.add("list-unstyled");
+    newMoreInfoBtn.setAttribute("class", "btn btn-info ms-5 mt-3")
 
     newBookmarkBtn.dataset.bookmarkId = element.id;
+    newMoreInfoBtn.dataset.moreInfoId = element.id;
 
 
     newTitle.textContent = element.title;
     newDesc.textContent = element.overview;
     newWatchBtn.textContent = "Watch trieler";
     newBookmarkBtn.textContent = "Bookmark";
+    newMoreInfoBtn.textContent = "More Info";
 
 
     element.genres.forEach(film => {
@@ -219,8 +222,78 @@ const renderList = function(film, list){
     newDiv.appendChild(newDesc);
     newDiv.appendChild(newWatchBtn);
     newDiv.appendChild(newBookmarkBtn);
+    newDiv.appendChild(newMoreInfoBtn)
   })
 }
 
 renderList(films, elFilmsList);
 renderGenres(films);
+
+elFilmsList.addEventListener("click", (evt) => {
+  elModal.innerHTML = null
+
+  if(evt.target.matches(".btn-info")){
+    const findMoreInfoId = evt.target.dataset.moreInfoId;
+
+    const foundMoreInfo = films.find(item => item.id === findMoreInfoId);
+
+    open();
+
+    const newMoreBtn = document.createElement("button");
+    const newMoreTitle = document.createElement("h5");
+    const newMoreText = document.createElement("p");
+    const newMoreList = document.createElement("ul");
+
+    newMoreList.setAttribute("class", "list-unstyled")
+
+    newMoreText.textContent = foundMoreInfo.overview;
+    newMoreTitle.textContent = foundMoreInfo.title;
+
+    foundMoreInfo.genres.forEach(item => {
+      const newMoreItem = document.createElement("li");
+
+      newMoreItem.textContent = item;
+
+      newMoreItem.setAttribute("class", "h5 text-danger")
+
+      newMoreList.appendChild(newMoreItem);
+    })
+
+    newMoreBtn.classList.add("close-modal");
+    newMoreTitle.setAttribute("class", "h2 text-primary mb-3");
+    newMoreText.setAttribute("class", "text-success")
+
+    elModal.appendChild(newMoreBtn);
+    elModal.appendChild(newMoreTitle)
+    elModal.appendChild(newMoreText);
+    elModal.appendChild(newMoreList);
+  }
+})
+
+function open(){
+  elModal.classList.remove("d-none");
+  elOverlay.classList.remove("d-none");
+}
+
+function closed() {
+  elModal.classList.add("d-none");
+  elOverlay.classList.add("d-none")
+}
+
+elModal.addEventListener("click", (evt) => {
+  if(evt.target.matches(".close-modal")){
+    closed()
+  }
+})
+
+elOverlay.addEventListener("click", () =>{
+  closed()
+})
+
+document.addEventListener("keydown", (evt) => {
+  if(evt.keyCode === 27){
+    if(!elModal.classList.contains("d-none")){
+      closed()
+    }
+  }
+})
